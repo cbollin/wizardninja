@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-namespace ConsoleApplication_Wizard
+
+namespace ConsoleApplication_WizardNinjaSamurai
 {
     public class Human
     {
@@ -8,11 +8,9 @@ namespace ConsoleApplication_Wizard
         //The { get; set; } format creates accessor methods for the field specified
         //This is done to allow flexibility
         public int health { get; set; }
-
-        //These properties are all private
-        int strength { get; set; }
-        int intelligence { get; set; }
-        int dexterity { get; set; }
+        public int strength { get; set; }
+        public int intelligence { get; set; }
+        public int dexterity { get; set; }
 
         public Human(string person)
         {
@@ -43,9 +41,99 @@ namespace ConsoleApplication_Wizard
             }
         }
     }
-    public static void Main(string[] args)
+    public class Samurai : Human
     {
-        Console.WriteLine("Hello World!");
+        public int health = 200;
+
+        public Samurai(string person) : base(person)
+        {
+
+        }
+        public int DeathBlow(Human user)
+        {
+            if(user.health <=50){
+                user.health = 0;
+                Console.WriteLine(name + " uses Death Blow! " + user.name + " is dead!");
+            }
+            else{
+                Console.WriteLine(user.name + "'s health is too high to use Death Blow!");
+            }
+            return (int)health;
+        }
+        public int Meditate()
+        {
+            health = 200;
+            Console.WriteLine(name + " meditates and is back to full health!");
+            return (int)health;
+        }
+    }
+
+    public class Ninja : Human
+    {
+        public int dexterity = 175;
+
+        public Ninja(string person) : base(person)
+        {
+
+        }
+        public int Steal(Human user)
+        {
+            health += 10;
+            Console.WriteLine(name + " is stealing from " + user.name + 
+            "! " + name + " now has " + health + " HP.");
+            return (int)health;
+        }
+        public int GetAway()
+        {
+            health -= 60;
+            Console.WriteLine(name + " is getting away! " + name + " now has " + health + " HP.");
+            return (int)health;
+        }
+    }
+    public class Wizard : Human
+    {
+        public int intelligence = 25;
+        public int health = 50;
+       
+       public Wizard(string person) : base(person)
+       {
+
+       }
+       public int Heal(Human user)
+       {
+            Console.WriteLine(name + " is healing " + user.name);
+            int heal = intelligence * 10;
+            user.health += heal;
+            Console.WriteLine(user.name + " receives " + heal + " health and now has " + user.health + " HP!");
+            return (int)health;
+       }
+       public int FireBall(Human user)
+        {
+            Console.WriteLine(name + " uses FireBall on " + user.name + "!");
+            Random rand = new Random();
+            int damage = rand.Next(50,250);
+            user.health -= damage;
+            Console.WriteLine(user.name + " receives " + damage + " damage from " + name + "'s FireBall and has " + user.health + " HP left!");
+            return (int)health;
+        }
+    
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            Wizard wizardA = new Wizard("Gandalf");
+            Wizard wizardB = new Wizard("Saruman");
+            wizardA.Heal(wizardB);
+            wizardB.FireBall(wizardA);
+            wizardA.FireBall(wizardB);
+            wizardA.FireBall(wizardB);
+            Ninja ninjaA = new Ninja("Prince Poo");
+            ninjaA.Steal(wizardB);
+            ninjaA.GetAway();           
+            Samurai samuraiA = new Samurai("Yoshi");
+            samuraiA.DeathBlow(wizardB);
+            samuraiA.Meditate();
+        }
     }
 }
 }
